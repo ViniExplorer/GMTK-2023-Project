@@ -1,3 +1,4 @@
+@echo off
 git add -A
 set /p summary= "Please summarise your new commit: "
 git commit -m "%summary%"
