@@ -11,6 +11,8 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("Music");
+        GetComponents<AudioSource>()[0].loop = true;
+        Play("Music");
     }
 
     private void Awake()
@@ -22,6 +24,8 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
         }
+
+        
     }
 
     public void Play(string soundName)

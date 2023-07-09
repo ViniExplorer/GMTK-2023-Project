@@ -8,9 +8,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2671246971947281878, guid: 5ece3abcde0987142b53e44da0b2c506, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 45f5fb6f00e4dc74ca00c05bb5486e9d, type: 3}
     - target: {fileID: 3453306294497031482, guid: 5ece3abcde0987142b53e44da0b2c506, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3453306294497031482, guid: 5ece3abcde0987142b53e44da0b2c506, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.5322282
       objectReference: {fileID: 0}
     - target: {fileID: 3453306294497031482, guid: 5ece3abcde0987142b53e44da0b2c506, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3453306294497031482, guid: 5ece3abcde0987142b53e44da0b2c506, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.6797702
+      value: 1.5809
       objectReference: {fileID: 0}
     - target: {fileID: 3453306294497031482, guid: 5ece3abcde0987142b53e44da0b2c506, type: 3}
       propertyPath: m_LocalPosition.z

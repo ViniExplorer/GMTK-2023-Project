@@ -72,14 +72,55 @@ public class BurgerComponent : MonoBehaviour
 
     public componentType component; // Gets the type of component for colour to be applied
     SpriteRenderer sprite; // Sprite for colour to be applied and changed
+    BurgerGenerator generator;
+
+    IngredientsList ingredientsList;
+    SpriteRenderer[] childrenSprites;
 
     // Start is called before the first frame update
     void Start()
     {
         // Applying the colour to the grayscale sprite of the burger component
-        sprite = GetComponent<SpriteRenderer>();
-        // Debug.Log(components[component].color);
-        sprite.color = (components[component].color);
+        try
+        {
+            sprite = GetComponent<SpriteRenderer>();
+            // Debug.Log(components[component].color);
+            sprite.color = (components[component].color);
+
+        } catch
+        {
+            Debug.Log("crying noises");
+        }
+        ingredientsList = FindObjectOfType<IngredientsList>();
+        generator = FindObjectOfType<BurgerGenerator>();
+    }
+
+    private void Awake()
+    {
+        // Applying the colour to the grayscale sprite of the burger component
+        try
+        {
+            sprite = GetComponent<SpriteRenderer>();
+            // Debug.Log(components[component].color);
+            sprite.color = (components[component].color);
+
+        }
+        catch
+        {
+            try
+            {
+                childrenSprites = GetComponentsInChildren<SpriteRenderer>();
+                foreach (var c in childrenSprites)
+                {
+                    c.color = components[component].color;
+                }
+            } catch
+            {
+                Debug.Log("crying noises");
+            }
+        }
+        ingredientsList = FindObjectOfType<IngredientsList>();
+        generator = FindObjectOfType<BurgerGenerator>();
     }
 
     // Update is called once per frame
@@ -90,9 +131,17 @@ public class BurgerComponent : MonoBehaviour
 
     #region Other Functions
     
-    public void Disappear()
+
+    public void GetToAdd()
     {
-        Destroy(gameObject);
+        ingredientsList.AddIngredient(component);
+        generator.SelectBurger(component);
+    }
+
+    public void GetToRemove()
+    {
+        FindObjectOfType<BurgerGenerator>().SelectBurger(component, false);
+        ingredientsList.RemoveIngredient(gameObject);
     }
 
     #endregion

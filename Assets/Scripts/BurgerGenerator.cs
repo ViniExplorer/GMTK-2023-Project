@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
@@ -29,7 +30,6 @@ public class BurgerGenerator : MonoBehaviour
     List<GameObject> correctBurgerComponents = new List<GameObject>();
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -56,15 +56,13 @@ public class BurgerGenerator : MonoBehaviour
     public void GenerateBurger()
     {
         // Generate top bun
-        burgerComponents.Add(GetBurgerComponentPrefab(BurgerComponent.componentType.buntop));
-        Instantiate(burgerComponents[0], transform.position, Quaternion.identity);
+        burgerComponents.Add(Instantiate(GetBurgerComponentPrefab(BurgerComponent.componentType.bunbottom), transform.position, Quaternion.identity));
 
         var totalNoComponentTypes = Enum.GetNames(typeof(BurgerComponent.componentType)).Length;
         // Debug.Log(totalNoComponentTypes);
 
         // Generates one meat type 
-        burgerComponents.Add(GetBurgerComponentPrefab(BurgerComponent.componentType.meat));
-        Instantiate(burgerComponents[burgerComponents.Count - 1], transform.position + new Vector3(0f, componentOffset), Quaternion.identity);
+        burgerComponents.Add(Instantiate(GetBurgerComponentPrefab(BurgerComponent.componentType.meat), transform.position + new Vector3(0f, componentOffset), Quaternion.identity));
 
         // Generates all the other components
         for (int i = 1; i < noComps; i++)
@@ -73,19 +71,29 @@ public class BurgerGenerator : MonoBehaviour
             // Debug.Log($"Component chosen: {(BurgerComponent.componentType)chosenComponentTypeIndex}");
             GameObject componentToAdd = GetBurgerComponentPrefab((BurgerComponent.componentType)chosenComponentTypeIndex);
             // Debug.Log($"{componentToAdd.name}");
-            burgerComponents.Add(componentToAdd);
 
             // Adds an offset position upwards
-            Vector3 pos = transform.position + new Vector3(0f, componentOffset * (i+1), 0f);
+            Vector3 pos = transform.position + new Vector3(0f, componentOffset * (i+1));
 
             // Generates it onto the world
-            Instantiate(componentToAdd, pos, Quaternion.identity);
+            burgerComponents.Add(Instantiate(componentToAdd, pos, Quaternion.identity));
+            // Putting it in front
+            try
+            {
+                burgerComponents[i].GetComponent<SpriteRenderer>().sortingOrder = i;
+            }
+            catch {
+                int num = burgerComponents[i].transform.childCount;
+                for (int j = 0; j < num; j++) 
+                {
+                    burgerComponents[j].transform.GetChild(j).GetComponent<SpriteRenderer>().sortingOrder = i;
+                }
+            }
         }
 
         // Making the bottom bun
-        burgerComponents.Add(GetBurgerComponentPrefab(BurgerComponent.componentType.bunbottom));
-        Instantiate(burgerComponents[burgerComponents.Count - 1], transform.position + new Vector3(0f, componentOffset * (noComps + 1)), Quaternion.identity);
-
+        burgerComponents.Add(Instantiate(GetBurgerComponentPrefab(BurgerComponent.componentType.buntop), transform.position + new Vector3(0f, componentOffset * (noComps + 1)), Quaternion.identity));
+        burgerComponents[burgerComponents.Count - 1].GetComponent<SpriteRenderer>().sortingOrder = noComps + 1;
         // Getting the correct answer defined
         correctBurgerComponents = burgerComponents;
     }
@@ -100,6 +108,17 @@ public class BurgerGenerator : MonoBehaviour
     }
 
 
+    public void SelectBurger(BurgerComponent.componentType cType, bool adding=true)
+    {
+        if (adding) 
+        {
+            selectedBurgerComponents.Add(GetBurgerComponentPrefab(cType));
+        } 
+        else
+        {
+            selectedBurgerComponents.Remove(GetBurgerComponentPrefab(cType));
+        }
+    }
 
 
 
@@ -119,6 +138,7 @@ public class BurgerGenerator : MonoBehaviour
             noComps++;
         }
     }
+
 
     #endregion
 }
